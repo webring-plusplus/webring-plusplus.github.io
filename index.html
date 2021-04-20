@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<title>webring demo</title>
+<meta charset="utf-8" />
+<style type="text/css">
+body {
+  max-width: 70em;
+  margin: 1em auto;
+}
+div {
+  margin-left: 1em;
+}
+a {
+  color: blue;
+  text-decoration: none;
+}
+.center {
+  text-align: center;
+}
+.big {
+  font-size: 2em;
+}
+.left {
+  float: left;
+}
+.tall {
+  min-height: 15em;
+  padding: 1em;
+  width: 20em;
+  overflow-x: auto;
+}
+.text {
+  margin-bottom: 0.5em;
+}
+</style>
+</head>
+
+<body>
+<div>
+<div class="big center text">
+<a href="https://github.com/webring-plusplus">⌨ webring++</a>
+</div>
+<div class="left tall" id="root"></div>
+<div class="text">
+<code>webring++</code> is a logical extension of 1990s <a href="https://en.wikipedia.org/wiki/Webring">webring</a>.
+</div>
+<div class="text">
+In a traditional webring, websites in the collection form a linked list.
+In a <code>webring++</code>, there is no ring at all - we instead abstract the idea to a digraph.
+Each site in the <code>webring++</code> points to zero or more other sites.
+As such, to join an existing <code>webring++</code>, you just need one of the other nodes to add your site to its forward set.
+</div>
+</div>
+<script src="//webring-plusplus.github.io/client-js/webring.js" crossorigin="anonymous"></script>
+<script>
+const to_id = (from) => {
+  return from.replaceAll(".", "").replaceAll("/", "");
+};
+
+const push = (where, what, prepend = "∟ ") => {
+  const new_el = document.createElement("div");
+  new_el.id = to_id(what);
+  new_el.textContent = `${prepend}${what}`;
+  document.querySelectorAll(`#${where}`)[0].append(new_el);
+};
+
+
+
+const root = "webring-plusplus.github.io";
+push("root", root, prepend="⬘ ");
+
+webring(
+  root,
+  (uri, peers, depth) => {
+    peers.forEach((peer) => push(to_id(uri), peer));
+  },
+  depth=3
+);
+</script>
+</body>
+</html>
