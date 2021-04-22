@@ -117,6 +117,9 @@ const to_id = (from) => {
 };
 
 const push = (where, what, prepend = "∟ ") => {
+  if (document.querySelectorAll(`#${what}`).length > 0) {
+    return;
+  }
   const new_el = document.createElement("div");
   new_el.id = to_id(what);
   new_el.textContent = `${prepend}${what}`;
@@ -131,7 +134,9 @@ push("root", root, prepend="⬘ ");
 webring(
   root,
   (uri, peers, depth) => {
-    peers.forEach((peer) => push(to_id(uri), peer));
+    peers.forEach((peer) => {
+      push(to_id(uri), peer);
+    });
   },
   depth=3
 );
